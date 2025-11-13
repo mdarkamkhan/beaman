@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Stay Strong Lock</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body { background:#0d1117; color:white; font-family:Arial; padding:20px; }
+.box { background:#111827; padding:20px; border-radius:12px; margin-top:20px; }
+button { padding:12px 18px; background:#3b82f6; border:none; color:white; border-radius:8px; margin-top:10px; }
+input, textarea {
+  width:100%; padding:12px; border-radius:8px; border:1px solid #1f2937;
+  background:#0f172a; color:white; margin-top:10px; font-size:16px;
+}
+</style>
+</head>
+<body>
+
+<h2>Stay Strong — 99 Character Lock</h2>
+<p>This lock helps you avoid urges by using a long shame-reminder password.</p>
+
+<div id="setup" class="box">
+  <h3>Setup Password</h3>
+  <textarea id="phrase" placeholder="Main fir se usi trap me jaa raha hun..." rows="3"></textarea>
+  <button onclick="genPw()">Generate 99-Character Password</button>
+  <p id="generated" style="word-wrap:break-word;margin-top:15px;"></p>
+  <button onclick="savePw()">Save Password</button>
+</div>
+
+<div id="unlock" class="box" style="display:none;">
+  <h3>Unlock</h3>
+  <p>Enter your 99-character password:</p>
+  <textarea id="entered" rows="3"></textarea>
+  <button onclick="unlock()">Unlock Now</button>
+  <p id="unlockMsg"></p>
+</div>
+
+<div id="content" class="box" style="display:none;">
+  <h3>Unlocked Successfully!</h3>
+  <p>Stay strong, Arkam. You made the right choice opening this wisely 💪</p>
+</div>
+
+<script>
+function make99(phrase) {
+  if (!phrase) phrase = "Main fir se usi trap me jaa raha hun...";
+  let base = phrase.trim() + " || ";
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+  while (base.length < 99) {
+    base += chars[Math.floor(Math.random()*chars.length)];
+  }
+  return base.slice(0,99);
+}
+
+function genPw() {
+  const p = document.getElementById("phrase").value;
+  const pw = make99(p);
+  document.getElementById("generated").innerText = pw;
+}
+
+function savePw() {
+  const pw = document.getElementById("generated").innerText;
+  if (!pw || pw.length !== 99) return alert("Generate password first");
+  localStorage.setItem("ss_pw", pw);
+  alert("Password saved.");
+  showUnlock();
+}
+
+function showUnlock() {
+  document.getElementById("setup").style.display = "none";
+  document.getElementById("unlock").style.display = "block";
+}
+
+function unlock() {
+  const saved = localStorage.getItem("ss_pw");
+  const ent = document.getElementById("entered").value;
+  if (ent === saved) {
+    document.getElementById("unlock").style.display = "none";
+    document.getElementById("content").style.display = "block";
+  } else {
+    document.getElementById("unlockMsg").innerText = "❌ Incorrect password. Stay disciplined.";
+  }
+}
+
+window.onload = () => {
+  if (localStorage.getItem("ss_pw")) showUnlock();
+};
+</script>
+
+</body>
+</html>
