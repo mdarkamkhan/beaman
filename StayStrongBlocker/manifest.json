@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Stay Strong Porn Blocker",
+  "version": "1.0",
+  "description": "Blocks porn websites and shows a motivational page.",
+  "permissions": ["webRequest", "webRequestBlocking", "declarativeNetRequest"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "host_permissions": ["<all_urls>"],
+  "web_accessible_resources": [{
+    "resources": ["blocked.html"],
+    "matches": ["<all_urls>"]
+  }]
+}
